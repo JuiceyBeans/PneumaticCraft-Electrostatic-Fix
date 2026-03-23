@@ -4,24 +4,24 @@ import com.juiceybeans.pnc_electrostatic_fix.mixin.AbstractAirHandlingBlockEntit
 import com.juiceybeans.pnc_electrostatic_fix.mixin.ElectrostaticCompressorBlockEntityAccessor;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import me.desht.pneumaticcraft.common.block.entity.ElectrostaticCompressorBlockEntity;
-import me.desht.pneumaticcraft.common.core.ModBlockEntities;
+import me.desht.pneumaticcraft.common.block.entity.compressor.ElectrostaticCompressorBlockEntity;
+import me.desht.pneumaticcraft.common.registry.ModBlockEntityTypes;
 import me.desht.pneumaticcraft.lib.PneumaticValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.ModLoadingContext;
 import org.slf4j.Logger;
 
 import java.util.Optional;
 import java.util.Set;
 
-import static me.desht.pneumaticcraft.common.block.entity.ElectrostaticCompressorBlockEntity.MAX_ELECTROSTATIC_GRID_SIZE;
+import static me.desht.pneumaticcraft.common.block.entity.compressor.ElectrostaticCompressorBlockEntity.MAX_ELECTROSTATIC_GRID_SIZE;
 
 @Mod(PNCElectrostaticFix.MOD_ID)
 public class PNCElectrostaticFix {
@@ -29,9 +29,9 @@ public class PNCElectrostaticFix {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public PNCElectrostaticFix() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = ModLoadingContext.get().getActiveContainer().getEventBus();
 
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
@@ -43,7 +43,7 @@ public class PNCElectrostaticFix {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     BlockPos hitPos = centerPos.offset(x, 0, z);
-                    Optional<ElectrostaticCompressorBlockEntity> blockEntity = level.getBlockEntity(hitPos, ModBlockEntities.ELECTROSTATIC_COMPRESSOR.get());
+                    Optional<ElectrostaticCompressorBlockEntity> blockEntity = level.getBlockEntity(hitPos, ModBlockEntityTypes.ELECTROSTATIC_COMPRESSOR.get());
 
                     blockEntity.ifPresent(compressor -> {
                         Set<BlockPos> gridSet = new ObjectOpenHashSet<>(MAX_ELECTROSTATIC_GRID_SIZE);

@@ -1,6 +1,6 @@
 package com.juiceybeans.pnc_electrostatic_fix.mixin;
 
-import me.desht.pneumaticcraft.common.block.entity.ElectrostaticCompressorBlockEntity;
+import me.desht.pneumaticcraft.common.block.entity.compressor.ElectrostaticCompressorBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
