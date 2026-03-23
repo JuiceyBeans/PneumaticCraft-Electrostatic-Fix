@@ -1,8 +1,8 @@
 plugins {
-    id 'idea'
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev.legacyforge' version '2.0.91'
+    id 'net.neoforged.moddev' version '2.0.140'
+    id 'idea'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -29,10 +29,10 @@ base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-legacyForge {
-    version = project.minecraft_version + '-' + project.forge_version
+neoForge {
+    version = project.neo_version
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -43,18 +43,18 @@ legacyForge {
         client {
             client()
 
-            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         server {
             server()
             programArgument '--nogui'
-            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         gameTestServer {
             type = "gameTestServer"
-            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         data {
@@ -77,33 +77,22 @@ legacyForge {
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.main.resources {
+    srcDir('src/generated/resources')
+
+    exclude("**/*.bbmodel")
+    exclude("src/generated/**/.cache")
+}
 
 configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
-obfuscation {
-    createRemappingConfiguration(configurations.localRuntime)
-}
 
 dependencies {
-    modImplementation "curse.maven:pneumaticcraft-repressurized-281849:7307654"
+    implementation "curse.maven:pneumaticcraft-repressurized-281849:7755211"
 
-    modRuntimeOnly "dev.emi:emi-forge:${emi_version}+${minecraft_version}"
-    modRuntimeOnly "maven.modrinth:jade:${jade_version}+forge"
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-}
-
-mixin {
-    add sourceSets.main, "${mod_id}.refmap.json"
-    config "${mod_id}.mixins.json"
-}
-
-jar {
-    manifest.attributes([
-            "MixinConfigs": "${mod_id}.mixins.json"
-    ])
+    runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}"
+    runtimeOnly "maven.modrinth:jade:${jade_version}+neoforge"
 }
 
 
@@ -111,8 +100,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
     var replaceProperties = [
             minecraft_version        : minecraft_version,
             minecraft_version_range  : minecraft_version_range,
-            forge_version            : forge_version,
-            forge_version_range      : forge_version_range,
+            neo_version              : neo_version,
             loader_version_range     : loader_version_range,
             mod_id                   : mod_id,
             mod_name                 : mod_name,
@@ -130,7 +118,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 }
 
 sourceSets.main.resources.srcDir generateModMetadata
-legacyForge.ideSyncTask generateModMetadata
+neoForge.ideSyncTask generateModMetadata
 
 publishing {
     publications {
