@@ -120,7 +120,8 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_version              : mod_version,
             mod_authors              : mod_authors,
             mod_description          : mod_description,
-            mod_credits              : mod_credits
+            mod_credits              : mod_credits,
+            pnc_version_range        : pnc_version_range,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
