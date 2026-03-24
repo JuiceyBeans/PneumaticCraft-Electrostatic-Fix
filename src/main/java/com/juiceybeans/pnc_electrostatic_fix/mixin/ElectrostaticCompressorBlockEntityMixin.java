@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Set;
 
-@Mixin(ElectrostaticCompressorBlockEntity.class)
+@Mixin(value = ElectrostaticCompressorBlockEntity.class, remap = false)
 public class ElectrostaticCompressorBlockEntityMixin {
 
     @Inject(
