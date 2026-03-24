@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractAirHandlingBlockEntityAccessor",
-    "ElectrostaticCompressorBlockEntityAccessor",
-    "ElectrostaticCompressorBlockEntityMixin"
+    "ElectrostaticCompressorBlockEntityAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
