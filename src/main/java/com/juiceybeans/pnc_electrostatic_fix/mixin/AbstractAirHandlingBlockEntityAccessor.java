@@ -5,7 +5,7 @@ import me.desht.pneumaticcraft.common.block.entity.AbstractAirHandlingBlockEntit
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(AbstractAirHandlingBlockEntity.class)
+@Mixin(value = AbstractAirHandlingBlockEntity.class, remap = false)
 public interface AbstractAirHandlingBlockEntityAccessor {
     @Accessor("airHandler")
     IAirHandlerMachine pnc_electrostatic_fix$airHandler();
